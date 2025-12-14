@@ -11,7 +11,7 @@ from .models import AppConfig
 from .feed_fetcher import fetch_all_feeds
 from .post_store import filter_new_posts
 from .llm_filter import filter_relevant_posts
-from .notifier import write_to_daily_note
+from .notifier import write_to_obsidian_file
 from .logger import logger
 
 
@@ -33,7 +33,7 @@ def run(config_path: Path | None = None) -> None:
     2. Fetch all feeds
     3. Filter to new posts only
     4. Filter by relevance using LLM
-    5. Write to Obsidian daily note
+    5. Write to Obsidian file
     """
     config = load_config(config_path)
     
@@ -64,9 +64,9 @@ def run(config_path: Path | None = None) -> None:
         logger.info("No relevant posts found")
         return
     
-    # Write to Obsidian daily note
-    logger.info(f"Writing {len(relevant_posts)} post(s) to daily note...")
-    write_to_daily_note(relevant_posts, config.obsidian)
+    # Write to Obsidian file
+    logger.info(f"Writing {len(relevant_posts)} post(s) to Obsidian...")
+    write_to_obsidian_file(relevant_posts, config.obsidian)
     logger.info("Done!")
 
 

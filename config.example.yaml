@@ -3,7 +3,7 @@
 # Obsidian vault configuration
 obsidian:
   vault_path: "YOUR_OBSIDIAN_VAULT_PATH"  # Path to your Obsidian vault
-  daily_notes_folder: "YOUR_DAILY_NOTES_FOLDER"            # Folder for daily notes
+  output_file: "FILE_NAME.md"             # File to write posts to
 
 # Keywords/interests for filtering posts
 keywords:

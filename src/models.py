@@ -22,7 +22,7 @@ class BlogConfig(BaseModel):
 class ObsidianConfig(BaseModel):
     """Obsidian vault configuration."""
     vault_path: str
-    daily_notes_folder: str = "Daily Notes"
+    output_file: str = "cold brew.md"
     
 
 class AppConfig(BaseModel):
