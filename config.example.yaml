@@ -1,0 +1,17 @@
+# Personal Feed Listener Configuration
+
+# Obsidian vault configuration
+obsidian:
+  vault_path: "YOUR_OBSIDIAN_VAULT_PATH"  # Path to your Obsidian vault
+  daily_notes_folder: "YOUR_DAILY_NOTES_FOLDER"            # Folder for daily notes
+
+# Keywords/interests for filtering posts
+keywords:
+  - "YOUR_KEYWORD_1"
+  - "YOUR_KEYWORD_2"
+  - "YOUR_KEYWORD_3"
+
+# Blog RSS feeds to monitor
+blogs:
+  - name: "YOUR_BLOG_NAME"
+    rss_url: "YOUR_BLOG_RSS_URL"

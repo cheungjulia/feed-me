@@ -1,0 +1,74 @@
+"""Main orchestrator for the feed listener."""
+
+import yaml
+from pathlib import Path
+from dotenv import load_dotenv
+
+# Load .env file from project root
+load_dotenv(Path(__file__).parent.parent / ".env")
+
+from .models import AppConfig
+from .feed_fetcher import fetch_all_feeds
+from .post_store import filter_new_posts
+from .llm_filter import filter_relevant_posts
+from .notifier import write_to_daily_note
+from .logger import logger
+
+
+def load_config(config_path: Path | None = None) -> AppConfig:
+    """Load configuration from YAML file."""
+    if config_path is None:
+        config_path = Path(__file__).parent.parent / "config.yaml"
+    
+    with open(config_path, "r") as f:
+        data = yaml.safe_load(f)
+    
+    return AppConfig(**data)
+
+
+def run(config_path: Path | None = None) -> None:
+    """Run the feed listener pipeline.
+    
+    1. Load config
+    2. Fetch all feeds
+    3. Filter to new posts only
+    4. Filter by relevance using LLM
+    5. Write to Obsidian daily note
+    """
+    config = load_config(config_path)
+    
+    if not config.blogs:
+        logger.warning("No blogs configured. Add blogs to config.yaml")
+        return
+    
+    # Fetch all posts from configured blogs
+    logger.info(f"Fetching posts from {len(config.blogs)} blog(s)...")
+    all_posts = fetch_all_feeds(config.blogs)
+    logger.info(all_posts)
+    logger.info(f"Found {len(all_posts)} posts from today")
+    
+    # Filter to new posts only
+    new_posts = filter_new_posts(all_posts)
+    logger.info(f"Found {len(new_posts)} new posts")
+    
+    if not new_posts:
+        logger.info("No new posts to process")
+        return
+    
+    # Filter by relevance using LLM
+    logger.info(f"Checking relevance against keywords: {config.keywords}")
+    relevant_posts = filter_relevant_posts(new_posts, config.keywords)
+    logger.info(f"Found {len(relevant_posts)} relevant posts")
+    
+    if not relevant_posts:
+        logger.info("No relevant posts found")
+        return
+    
+    # Write to Obsidian daily note
+    logger.info(f"Writing {len(relevant_posts)} post(s) to daily note...")
+    write_to_daily_note(relevant_posts, config.obsidian)
+    logger.info("Done!")
+
+
+if __name__ == "__main__":
+    run()
