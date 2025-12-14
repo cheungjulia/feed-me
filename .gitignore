@@ -28,3 +28,9 @@ data/*.db
 
 # config
 config.yaml
+
+# Logs
+logs/
+
+# Personal notes
+NOTES.md

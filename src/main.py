@@ -44,12 +44,12 @@ def run(config_path: Path | None = None) -> None:
     # Fetch all posts from configured blogs
     logger.info(f"Fetching posts from {len(config.blogs)} blog(s)...")
     all_posts = fetch_all_feeds(config.blogs)
-    logger.info(all_posts)
     logger.info(f"Found {len(all_posts)} posts from today")
     
     # Filter to new posts only
     new_posts = filter_new_posts(all_posts)
     logger.info(f"Found {len(new_posts)} new posts")
+    logger.info(f"New posts: {[post.title for post in new_posts]}")
     
     if not new_posts:
         logger.info("No new posts to process")

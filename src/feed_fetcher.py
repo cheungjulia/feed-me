@@ -5,7 +5,6 @@ from datetime import date
 from dateutil import parser as date_parser
 
 from .models import Post, BlogConfig
-from .logger import logger
 
 
 def _is_today(published: str | None) -> bool:
@@ -30,7 +29,6 @@ def fetch_feed(rss_url: str, blog_name: str | None = None) -> list[Post]:
     posts: list[Post] = []
     
     for entry in feed.entries:
-        logger.info(f"Entry: {entry}")
         post = Post(
             title=entry.get("title", ""),
             link=entry.get("link", ""),

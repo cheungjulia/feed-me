@@ -35,7 +35,7 @@ def write_to_obsidian_file(posts: list[Post], config: ObsidianConfig) -> None:
     for post in posts:
         content_parts.append(_format_post(post))
     
-    content = "\n".join(content_parts)
+    content = "".join(content_parts)
     
     # Append to file (creates if doesn't exist)
     with open(note_path, "a") as f:
