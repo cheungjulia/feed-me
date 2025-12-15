@@ -13,6 +13,7 @@ from .post_store import filter_new_posts
 from .llm_filter import filter_relevant_posts
 from .notifier import write_to_obsidian_file
 from .logger import logger
+from datetime import date, timedelta
 
 
 def load_config(config_path: Path | None = None) -> AppConfig:
@@ -42,9 +43,8 @@ def run(config_path: Path | None = None) -> None:
         return
     
     # Fetch all posts from configured blogs
-    logger.info(f"Fetching posts from {len(config.blogs)} blog(s)...")
+    logger.info(f"NEW RUN: Fetching posts from {len(config.blogs)} blog(s) on {(date.today() - timedelta(days=1)).isoformat()}")
     all_posts = fetch_all_feeds(config.blogs)
-    logger.info(f"Found {len(all_posts)} posts from yesterday")
     
     # Filter to new posts only
     new_posts = filter_new_posts(all_posts)
@@ -55,10 +55,9 @@ def run(config_path: Path | None = None) -> None:
         logger.info("No new posts to process")
         return
     
-    # Filter by relevance using LLM
-    logger.info(f"Checking relevance against keywords: {config.keywords}")
+    # Filter by relevance using LLM against keywords
     relevant_posts = filter_relevant_posts(new_posts, config.keywords)
-    logger.info(f"Found {len(relevant_posts)} relevant posts")
+    logger.info(f"Found {len(relevant_posts)} relevant posts against keywords: {config.keywords}")
     
     if not relevant_posts:
         logger.info("No relevant posts found")

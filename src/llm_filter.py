@@ -29,12 +29,17 @@ def check_relevance(post: Post, keywords: list[str]) -> bool:
     keywords_str = ", ".join(keywords)
     description = post.description[:500] if post.description else "No description"
     
-    prompt = f"""Determine if this blog post is relevant to ANY of these topics: {keywords_str}
+    prompt = f"""
+    
+    You are a helpful assistant that determines if a blog post is relevant to a list of topics.
+    Determine if this blog post is relevant to ANY of these topics: {keywords_str}.
 
-Post Title: {post.title}
-Post Description: {description}
+    Post Title: {post.title}
+    Post Description: {description}
+    Post Link: {post.link}
+    - If the post link is a YouTube SHORT, it is not relevant to the topics.
 
-Respond with your relevance assessment."""
+    Respond with your relevance assessment in simple yes or no."""
 
     response = client.beta.chat.completions.parse(
         model="gpt-4o-mini",
