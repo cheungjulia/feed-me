@@ -66,7 +66,7 @@ def run(config_path: Path | None = None) -> None:
     # Write to Obsidian file
     logger.info(f"Writing {len(relevant_posts)} post(s) to Obsidian...")
     write_to_obsidian_file(relevant_posts, config.obsidian)
-    logger.info("Done!")
+    logger.info("Done! \n\n")
 
 
 if __name__ == "__main__":

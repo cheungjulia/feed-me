@@ -30,7 +30,7 @@ data/*.db
 config.yaml
 
 # Logs
-logs/
+logs/*.log
 
 # Personal notes
 NOTES.md
