@@ -1,2 +1,2 @@
-# Feed Listener Package
+"""Feed Listener Package."""
 

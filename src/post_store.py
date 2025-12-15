@@ -6,7 +6,6 @@ from pathlib import Path
 
 from .models import Post
 
-# Default storage path
 DATA_DIR = Path(__file__).parent.parent / "data"
 DB_PATH = DATA_DIR / "posts.db"
 

@@ -29,14 +29,12 @@ def write_to_obsidian_file(posts: list[Post], config: ObsidianConfig) -> None:
     
     note_path = _get_output_path(config)
     
-    # Build content with date heading
-    yesterday = (date.today() - timedelta(days=1)).isoformat()  # YYYY-MM-DD
+    yesterday = (date.today() - timedelta(days=1)).isoformat()
     content_parts = [f"\n## {yesterday}\n"]
     for post in posts:
         content_parts.append(_format_post(post))
     
     content = "".join(content_parts)
     
-    # Append to file (creates if doesn't exist)
     with open(note_path, "a") as f:
         f.write(content)

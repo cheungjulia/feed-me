@@ -4,7 +4,6 @@ import yaml
 from pathlib import Path
 from dotenv import load_dotenv
 
-# Load .env file from project root
 load_dotenv(Path(__file__).parent.parent / ".env")
 
 from .models import AppConfig
@@ -42,11 +41,8 @@ def run(config_path: Path | None = None) -> None:
         logger.warning("No blogs configured. Add blogs to config.yaml")
         return
     
-    # Fetch all posts from configured blogs
     logger.info(f"NEW RUN: Fetching posts from {len(config.blogs)} blog(s) on {(date.today() - timedelta(days=1)).isoformat()}")
     all_posts = fetch_all_feeds(config.blogs)
-    
-    # Filter to new posts only
     new_posts = filter_new_posts(all_posts)
     logger.info(f"Found {len(new_posts)} new posts")
     logger.info(f"New posts: {[post.title for post in new_posts]}")
@@ -55,7 +51,6 @@ def run(config_path: Path | None = None) -> None:
         logger.info("No new posts to process")
         return
     
-    # Filter by relevance using LLM against keywords
     relevant_posts = filter_relevant_posts(new_posts, config.keywords)
     logger.info(f"Found {len(relevant_posts)} relevant posts against keywords: {config.keywords}")
     
@@ -63,7 +58,6 @@ def run(config_path: Path | None = None) -> None:
         logger.info("No relevant posts found")
         return
     
-    # Write to Obsidian file
     logger.info(f"Writing {len(relevant_posts)} post(s) to Obsidian...")
     write_to_obsidian_file(relevant_posts, config.obsidian)
     logger.info("Done! \n\n")
