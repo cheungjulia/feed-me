@@ -1,6 +1,6 @@
 """Obsidian file integration."""
 
-from datetime import date
+from datetime import date, timedelta
 from pathlib import Path
 
 from .models import Post, ObsidianConfig
@@ -14,7 +14,7 @@ def _get_output_path(config: ObsidianConfig) -> Path:
 
 def _format_post(post: Post) -> str:
     """Format a post for the note."""
-    return f"- {post.title}: {post.link}\n"
+    return f"[{post.title}]({post.link}) ({post.blog_name})\n"
 
 
 def write_to_obsidian_file(posts: list[Post], config: ObsidianConfig) -> None:
@@ -30,8 +30,8 @@ def write_to_obsidian_file(posts: list[Post], config: ObsidianConfig) -> None:
     note_path = _get_output_path(config)
     
     # Build content with date heading
-    today = date.today().isoformat()  # YYYY-MM-DD
-    content_parts = [f"\n## {today}\n"]
+    yesterday = (date.today() - timedelta(days=1)).isoformat()  # YYYY-MM-DD
+    content_parts = [f"\n## {yesterday}\n"]
     for post in posts:
         content_parts.append(_format_post(post))
     

@@ -1,14 +1,14 @@
 """RSS feed fetcher module."""
 
 import feedparser
-from datetime import date
+from datetime import date, timedelta
 from dateutil import parser as date_parser
 
 from .models import Post, BlogConfig
 
 
-def _is_today(published: str | None) -> bool:
-    """Check if a published date string is from today.
+def _is_yesterday(published: str | None) -> bool:
+    """Check if a published date string is from yesterday.
     
     Uses dateutil.parser which flexibly handles many date formats
     including RFC 2822, ISO 8601, and others.
@@ -18,7 +18,8 @@ def _is_today(published: str | None) -> bool:
     
     try:
         pub_date = date_parser.parse(published).date()
-        return pub_date == date.today()
+        yesterday = date.today() - timedelta(days=1)
+        return pub_date == yesterday
     except (ValueError, TypeError):
         return False
 
@@ -41,12 +42,12 @@ def fetch_feed(rss_url: str, blog_name: str | None = None) -> list[Post]:
     return posts
 
 
-def fetch_all_feeds(blogs: list[BlogConfig], today_only: bool = True) -> list[Post]:
+def fetch_all_feeds(blogs: list[BlogConfig], yesterday_only: bool = True) -> list[Post]:
     """Fetch posts from multiple blog feeds.
     
     Args:
         blogs: List of blog configurations
-        today_only: If True, only return posts published today
+        yesterday_only: If True, only return posts published yesterday
     
     Returns:
         Combined list of posts from all feeds
@@ -57,7 +58,7 @@ def fetch_all_feeds(blogs: list[BlogConfig], today_only: bool = True) -> list[Po
         posts = fetch_feed(blog.rss_url, blog_name=blog.name)
         all_posts.extend(posts)
     
-    if today_only:
-        all_posts = [p for p in all_posts if _is_today(p.published)]
+    if yesterday_only:
+        all_posts = [p for p in all_posts if _is_yesterday(p.published)]
     
     return all_posts

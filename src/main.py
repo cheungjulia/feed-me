@@ -44,7 +44,7 @@ def run(config_path: Path | None = None) -> None:
     # Fetch all posts from configured blogs
     logger.info(f"Fetching posts from {len(config.blogs)} blog(s)...")
     all_posts = fetch_all_feeds(config.blogs)
-    logger.info(f"Found {len(all_posts)} posts from today")
+    logger.info(f"Found {len(all_posts)} posts from yesterday")
     
     # Filter to new posts only
     new_posts = filter_new_posts(all_posts)
