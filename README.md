@@ -1,4 +1,4 @@
-# 🍜 ᶠᵉᵉᵈ ᵐᵉ /ᐠ-ⱉ-ᐟ\ﾉ
+# 🍜 ᶠᵉᵉᵈ ᵐᵉ
 
 A personal RSS feed reader that uses AI to filter posts based on your interests and saves the good stuff to your Obsidian vault.
 
